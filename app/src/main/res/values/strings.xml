@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YALAHWY</string>
+    <string name="img_desc_post">image for post</string>
+    <string name="addNewPost">Add</string>
+    <string name="NewPostHint">Description here</string>
+    <string name="NewPostHintReg">Region here</string>
 </resources>
