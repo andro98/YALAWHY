@@ -2,7 +2,7 @@ package com.example.andrew.yalahwy.Entity;
 
 import android.net.Uri;
 
-import java.sql.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
 public class Post {
     private String postID;
@@ -13,7 +13,7 @@ public class Post {
     private String Q1;
     private String Q2;
     private Uri postImage;
-    private Timestamp timestamp;
+    private String timestamp;
 
     public String getPostID() {
         return postID;
@@ -63,11 +63,11 @@ public class Post {
         this.postImage = postImage;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
