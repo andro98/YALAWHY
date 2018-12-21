@@ -34,7 +34,11 @@ import java.util.*;
 public class AddPost extends AppCompatActivity {
 
     private ImageView newpost_img;
-    private EditText newpost_desc, newpost_reg;
+    private EditText newpost_desc;
+
+
+
+    private EditText newpost_reg;
     private Button newpost_add;
     private android.support.v7.widget.Toolbar newpost_toolbar;
     private ProgressBar newpost_prog;
@@ -43,8 +47,6 @@ public class AddPost extends AppCompatActivity {
 
     private Uri newpostImageUri;
 
-    private StorageReference storageReference;
-    private FirebaseFirestore firebaseFirestore;
 
     private void init(){
         newpost_toolbar = findViewById(R.id.newpost_toolbar);
@@ -106,19 +108,13 @@ public class AddPost extends AppCompatActivity {
     }
 
     private void addPost(){
+
         newpost_prog.setVisibility(View.VISIBLE);
+        post_service.addPost(this);
 
-        Post post = new Post();
+//        post_service.addPost(this,newpost_desc, newpost_reg, newpostImageUri );
 
-        final String desc = newpost_desc.getText().toString();
-        final String reg = newpost_reg.getText().toString();
 
-        post.setPostImage(newpostImageUri);
-        post.setPostDesc(desc);
-        post.setRegion(reg);
-        post.setTimestamp(FieldValue.serverTimestamp().toString());
-
-        post_service.addPost(post, this);
     }
 
     private void BringImagePicker() {
@@ -150,5 +146,29 @@ public class AddPost extends AppCompatActivity {
             }
         }
 
+    }
+
+    public ImageView getNewpost_img() {
+        return newpost_img;
+    }
+
+    public EditText getNewpost_desc() {
+        return newpost_desc;
+    }
+
+    public EditText getNewpost_reg() {
+        return newpost_reg;
+    }
+
+    public Button getNewpost_add() {
+        return newpost_add;
+    }
+
+    public ProgressBar getNewpost_prog() {
+        return newpost_prog;
+    }
+
+    public Uri getNewpostImageUri() {
+        return newpostImageUri;
     }
 }

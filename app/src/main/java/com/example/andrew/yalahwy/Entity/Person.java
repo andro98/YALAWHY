@@ -2,7 +2,7 @@ package com.example.andrew.yalahwy.Entity;
 
 import android.net.Uri;
 
-public class Person {
+public class  Person {
     private String FirstName;
     private String LastName;
     private String Address;
