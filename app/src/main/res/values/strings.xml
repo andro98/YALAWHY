@@ -4,4 +4,9 @@
     <string name="addNewPost">Add</string>
     <string name="NewPostHint">Description here</string>
     <string name="NewPostHintReg">Region here</string>
+    <string name="Profile_fname_hint">First Name</string>
+    <string name="Profile_lname_hint">Last Name</string>
+    <string name="Profile_contactNo_hint">Contact Number</string>
+    <string name="Profile_address_hint">Your Address</string>
+    <string name="Btn_hint">Save</string>
 </resources>

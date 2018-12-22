@@ -30,4 +30,8 @@ public class AuthDataAccess {
     public boolean getCurrentUserid(){
         return (mAuth.getCurrentUser() != null);
     }
+
+    public String getUserId(){
+        return mAuth.getCurrentUser().getUid();
+    }
 }
