@@ -1,19 +1,52 @@
 package com.example.andrew.yalahwy.Entity;
 
-import android.net.Uri;
-
 import com.google.firebase.firestore.FieldValue;
+
+import java.util.Date;
+
 
 public class Post {
     private String postID;
     private String userID;
     private String postDesc;
-    private String searchType;
+    //private String searchType;
     private String region;
-    private String Q1;
-    private String Q2;
-    private Uri postImage;
-    private String timestamp;
+   /* private String Q1;
+    private String Q2;*/
+    private String postImage;
+    private String imageThumb;
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Date timestamp;
+
+    public String getImageThumb() {
+        return imageThumb;
+    }
+
+    public void setImageThumb(String imageThumb) {
+        this.imageThumb = imageThumb;
+    }
+
+    public Post(){
+
+    }
+
+    public Post(String postID, String userID, String postDesc, String region, String postImage, String imageThumb) {
+        this.postID = postID;
+        this.userID = userID;
+        this.postDesc = postDesc;
+        this.region = region;
+        this.postImage = postImage;
+        this.imageThumb = imageThumb;
+    }
+
 
     public String getPostID() {
         return postID;
@@ -39,13 +72,13 @@ public class Post {
         this.postDesc = postDesc;
     }
 
-    public String getSearchType() {
+   /* public String getSearchType() {
         return searchType;
     }
 
     public void setSearchType(String searchType) {
         this.searchType = searchType;
-    }
+    }*/
 
     public String getRegion() {
         return region;
@@ -55,23 +88,17 @@ public class Post {
         this.region = region;
     }
 
-    public Uri getPostImage() {
+    public String getPostImage() {
         return postImage;
     }
 
-    public void setPostImage(Uri postImage) {
+    public void setPostImage(String postImage) {
         this.postImage = postImage;
     }
 
-    public String getTimestamp() {
-        return timestamp;
-    }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
 
-    public String getQ1() {
+ /*   public String getQ1() {
         return Q1;
     }
 
@@ -85,5 +112,5 @@ public class Post {
 
     public void setQ2(String q2) {
         Q2 = q2;
-    }
+    }*/
 }
