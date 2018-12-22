@@ -70,20 +70,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        /*switch (item.getItemId())
+        switch (item.getItemId())
         {
-            case R.id.action_setting:
-                startActivity(new Intent(MainActivity.this, SetupActivity.class));
-                return true;
-            case R.id.action_logout:
-                logOut();
+            case R.id.profile_main_menu:
+                startActivity(new Intent(MainActivity.this, ProfileAct.class));
                 return true;
             default:
                 finish();
                 System.exit(0);
                 return false;
 
-        }*/
-        return true;
+        }
     }
 }
