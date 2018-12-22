@@ -55,8 +55,9 @@ public class Post_Service {
     public PostRecycle getAdap(){return postRecycle;}
 
     public void showPost(Context context){
-
-        postDataAccess.getPost(context, post_list_data, postRecycle);
+        if(mAuth.getCurrentUserid()){
+            postDataAccess.getPost(context, post_list_data, postRecycle);
+        }
 
     }
 
@@ -65,82 +66,43 @@ public class Post_Service {
     }
 
     public void addPost(AddPost addPost){
-        Post post = new Post();
-        if(addPost.getNewpostImageUri() != null && addPost.getNewpost_desc().getText()!= null &&addPost.getNewpost_reg().getText() != null){
-            post.setPostImage(addPost.getNewpostImageUri().toString());
-            post.setPostDesc(addPost.getNewpost_desc().getText().toString());
-            post.setRegion(addPost.getNewpost_reg().getText().toString());
-            if(!post.getPostDesc().isEmpty() && !post.getRegion().isEmpty() && post.getPostImage()!= null){
-                File newImageFile = new File(Uri.parse(post.getPostImage()).getPath());
-                try {
+        if(mAuth.getCurrentUserid()) {
+            Post post = new Post();
+            if (addPost.getNewpostImageUri() != null && addPost.getNewpost_desc().getText() != null && addPost.getNewpost_reg().getText() != null) {
+                post.setPostImage(addPost.getNewpostImageUri().toString());
+                post.setPostDesc(addPost.getNewpost_desc().getText().toString());
+                post.setRegion(addPost.getNewpost_reg().getText().toString());
+                post.setUserID(mAuth.getUserId());
+                if (!post.getPostDesc().isEmpty() && !post.getRegion().isEmpty() && post.getPostImage() != null) {
+                    File newImageFile = new File(Uri.parse(post.getPostImage()).getPath());
+                    try {
 
-                    compressedImageFile = new Compressor(addPost.getBaseContext())
-                            .setMaxHeight(720)
-                            .setMaxWidth(720)
-                            .setQuality(50)
-                            .compressToBitmap(newImageFile);
+                        compressedImageFile = new Compressor(addPost.getBaseContext())
+                                .setMaxHeight(720)
+                                .setMaxWidth(720)
+                                .setQuality(50)
+                                .compressToBitmap(newImageFile);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] imageData = baos.toByteArray();
+
+                    postDataAccess.addPost(post, addPost.getBaseContext(), imageData);
+                } else {
+                    Toast.makeText(addPost.getBaseContext(), "Fill All the Fields Please", Toast.LENGTH_SHORT).show();
+                    addPost.getNewpost_prog().setVisibility(View.INVISIBLE);
                 }
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageData = baos.toByteArray();
-
-                postDataAccess.addPost(post, addPost.getBaseContext(), imageData);
-            }else{
+            } else {
                 Toast.makeText(addPost.getBaseContext(), "Fill All the Fields Please", Toast.LENGTH_SHORT).show();
                 addPost.getNewpost_prog().setVisibility(View.INVISIBLE);
             }
-        }else{
-            Toast.makeText(addPost.getBaseContext(), "Fill All the Fields Please", Toast.LENGTH_SHORT).show();
-            addPost.getNewpost_prog().setVisibility(View.INVISIBLE);
+        }else {
+            ((Activity)addPost).finish();
         }
-
-
-
-    }
-
-    public void addPost( Context context, TextView newpost_desc, TextView newpost_reg, Uri newpostImageUri){
-        /*if(mAuth.getCurrentUserid() == false){
-            Toast.makeText(context, "Register first", Toast.LENGTH_SHORT).show();
-        }else{
-*/
-        Post post = new Post();
-
-        final String desc = newpost_desc.getText().toString();
-        final String reg = newpost_reg.getText().toString();
-
-        post.setPostImage(newpostImageUri.toString());
-        post.setPostDesc(desc);
-        post.setRegion(reg);
-
-        if(!post.getPostDesc().isEmpty() && !post.getRegion().isEmpty() && post.getPostImage()!= null){
-            File newImageFile = new File(Uri.parse(post.getPostImage()).getPath());
-            try {
-
-                compressedImageFile = new Compressor(context)
-                        .setMaxHeight(720)
-                        .setMaxWidth(720)
-                        .setQuality(50)
-                        .compressToBitmap(newImageFile);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            compressedImageFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageData = baos.toByteArray();
-
-            postDataAccess.addPost(post, context, imageData);
-        }else{
-            Toast.makeText(context, "Fill All the Fields Please", Toast.LENGTH_SHORT).show();
-        }
-      //  }
-
-
 
     }
 

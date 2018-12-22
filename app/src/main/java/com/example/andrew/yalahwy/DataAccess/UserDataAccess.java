@@ -9,10 +9,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.andrew.yalahwy.Activity.MainActivity;
 import com.example.andrew.yalahwy.Activity.ProfileAct;
+import com.example.andrew.yalahwy.Adapter.PostRecycle;
 import com.example.andrew.yalahwy.Entity.Person;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.android.gms.tasks.Task;
@@ -29,13 +31,13 @@ public class UserDataAccess {
     private FirebaseFirestore firebaseFirestore;
 
     public UserDataAccess(){
+
+        Storageref = FirebaseStorage.getInstance().getReference();
         firebaseFirestore=FirebaseFirestore.getInstance();
     }
 
     public void ShowProf(final String user_id, final ProfileAct profileAct )
-
     {
-
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
          @Override
          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -116,8 +118,31 @@ public class UserDataAccess {
         });
     }
 
-    public void getUserInfo(){
+    public void getUserInfo(String user_id, final PostRecycle.ViewHolder postRecycle){
+        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    if(task.getResult().exists())
+                    {
+                        Person person = new Person();
+                        person.setFirstName(task.getResult().getString("FName"));
+                        person.setLastName(task.getResult().getString("LName"));
+                        person.setPhoneNumber(task.getResult().getString("ContactNo"));
+                        person.setAddress(task.getResult().getString("Address"));
+                        person.setImageUri(task.getResult().getString("Image"));
+                        postRecycle.setProfile_name(person.getFirstName());
+                        postRecycle.setProfile_image(person.getImageUri());
 
+                    }else{
+                    }
+                }else
+                {
+
+                }
+            }
+        });
     }
     public void updateUser(){
 

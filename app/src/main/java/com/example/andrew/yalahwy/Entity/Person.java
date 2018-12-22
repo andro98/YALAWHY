@@ -7,11 +7,19 @@ public class  Person {
     private String LastName;
     private String Address;
     private String PhoneNumber;
+    private String imageUri;
     private String User_id;
     private String UserEmail;
     private String UserPSW;
     private Uri mainImageURI = null;
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
 
     public String getFirstName() {
         return FirstName;

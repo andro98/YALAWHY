@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import com.crashlytics.android.Crashlytics;
+import com.example.andrew.yalahwy.Entity.Person;
+import com.example.andrew.yalahwy.Services.Person_Service;
 import com.example.andrew.yalahwy.Services.Post_Service;
 
 import io.fabric.sdk.android.Fabric;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private Post_Service post_service;
     private RecyclerView recyclerView;
     private Toolbar mainToolbar;
+    private Person_Service person_service;
+
 
     private void init(){
         mainToolbar = findViewById(R.id.main_toolbar);
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.post_recycle);
 
         post_service = new Post_Service();
+        person_service = new Person_Service();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(post_service.getAdap());
@@ -43,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
+
         init();
 
+        Boolean currentUser = person_service.checkIfLoggedIn();
+        if(!currentUser){
+            sendToLogin();
+        }else{
         addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         post_service.showPost(this);
+        }
     }
 
     @Override
@@ -81,5 +92,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
 
         }
+    }
+
+    public void sendToLogin() {
+        Intent mainIntent = new Intent(MainActivity.this, LoginAct.class);
+        startActivity(mainIntent);
+        finish();
+
     }
 }

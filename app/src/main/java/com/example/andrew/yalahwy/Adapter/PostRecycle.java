@@ -1,6 +1,7 @@
 package com.example.andrew.yalahwy.Adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +10,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.text.format.DateFormat;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.andrew.yalahwy.Activity.R;
+import com.example.andrew.yalahwy.DataAccess.AuthDataAccess;
+import com.example.andrew.yalahwy.DataAccess.UserDataAccess;
+import com.example.andrew.yalahwy.Entity.Person;
 import com.example.andrew.yalahwy.Entity.Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.*;
 
@@ -23,9 +31,15 @@ public class PostRecycle extends RecyclerView.Adapter<PostRecycle.ViewHolder>{
 
     public Context context;
     public List<Post> post_List_data;
+    private Person person;
+    private UserDataAccess userDataAccess;
 
+    AuthDataAccess mAuth;
     public PostRecycle(List<Post> post_List_data){
+
         this.post_List_data = post_List_data;
+        userDataAccess = new UserDataAccess();
+        mAuth = new AuthDataAccess();
     }
 
     @NonNull
@@ -45,8 +59,9 @@ public class PostRecycle extends RecyclerView.Adapter<PostRecycle.ViewHolder>{
         long milliseconds = post.getTimestamp().getTime();
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(milliseconds)).toString();
         holder.setPost_date(dateString);
-
+        userDataAccess.getUserInfo(post.getUserID(), holder);
     }
+
 
     @Override
     public int getItemCount() {
@@ -93,8 +108,9 @@ public class PostRecycle extends RecyclerView.Adapter<PostRecycle.ViewHolder>{
             this.profile_name.setText(profileName);
         }
 
-        public void setProfile_image() {
+        public void setProfile_image(String downloadUri) {
             this.profile_image = mView.findViewById(R.id.profile_image);
+            Glide.with(context).load(downloadUri).into(profile_image);
         }
     }
 

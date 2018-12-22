@@ -5,4 +5,8 @@
     <color name="colorAccent">#d81b60</color>
     <color name="buttonColor">#00b19e</color>
     <color name="text_black">#000000</color>
+
+    <color name="whiteTransparentHalf">#80ffffff</color>
+    <color name="likeBtnGray">#747474</color>
+    <color name="likeBtnAccent">#F44336</color>
 </resources>
