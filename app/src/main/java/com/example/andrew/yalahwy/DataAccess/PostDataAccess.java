@@ -36,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,6 +155,50 @@ public class PostDataAccess {
             }
         });
 
+    }
+
+    public void getPost(final Context context, final List<Post> post_list_data, final PostRecycle postRecycle, String searchlocation,String type, Timestamp Date){
+
+        Query  firstQuery = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING);
+
+        if(searchlocation.equals("NONE") &&type.equals("NONE") && Date != null ){
+            //  Timestamp final_date=post_service.
+            firstQuery = firebaseFirestore.collection("Posts")
+                    .whereLessThanOrEqualTo("timestamp",Date);
+        }
+        else if (searchlocation.equals("NONE")  && Date != null){
+            firstQuery = firebaseFirestore.collection("Posts")
+                    .whereEqualTo("type",type)
+                    .whereLessThanOrEqualTo("timestamp",Date);
+        }
+        else if (type.equals("NONE") && Date != null){
+            firstQuery = firebaseFirestore.collection("Posts")
+                    .whereEqualTo("region",searchlocation)
+                    .whereLessThanOrEqualTo("timestamp",Date);
+        }
+
+        if(firstQuery != null){
+        firstQuery.addSnapshotListener((Activity) context, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                try{
+                for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
+                    if (doc.getType() == DocumentChange.Type.ADDED) {
+
+                        Post post=  doc.getDocument().toObject(Post.class);
+                        post_list_data.add(post);
+                        postRecycle.notifyDataSetChanged();
+
+                    }
+                }
+
+                } catch(Exception ex){
+                    Toast.makeText(context, "No Result", Toast.LENGTH_SHORT).show();
+            }
+        }});
+
+        }
     }
 
 }

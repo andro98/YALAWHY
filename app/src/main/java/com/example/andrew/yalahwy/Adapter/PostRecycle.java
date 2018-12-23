@@ -52,6 +52,7 @@ public class PostRecycle extends RecyclerView.Adapter<PostRecycle.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(post_List_data.size() > 0){
         Post post = post_List_data.get(position);
         holder.setPost_desc(post.getPostDesc());
         holder.setPost_image(post.getPostImage(), post.getImageThumb());
@@ -60,6 +61,7 @@ public class PostRecycle extends RecyclerView.Adapter<PostRecycle.ViewHolder>{
         String dateString = DateFormat.format("MM/dd/yyyy", new Date(milliseconds)).toString();
         holder.setPost_date(dateString);
         userDataAccess.getUserInfo(post.getUserID(), holder);
+        }
     }
 
 

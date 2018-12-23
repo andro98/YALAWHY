@@ -18,4 +18,35 @@
     <string name="reg_login_text">Already have an Account?</string>
     <string name="reg_pass_text">Password...</string>
     <string name="reg_confirm_pass_text">Confirm Password...</string>
+
+    <string name="title_activity_search_activit_y">search</string>
+    <string name="chois">Please enter your search choice</string>
+    <string-array name="search_cat">
+        <item>NONE</item>
+        <item >today</item>
+        <item >yasterday</item>
+        <item >this week</item>
+        <item >last week</item>
+        <item >this month</item>
+    </string-array>
+    <string-array name="search_cat_loc">
+        <item>NONE</item>
+        <item>Cairo</item>
+        <item>Giza</item>
+        <item>Alexandria</item>
+        <item>Ismailia</item>
+        <item>Menia</item>
+        <item>Sharm el shake</item>
+        <item>Domiat</item>
+        <item>Fayoum</item>
+        <item>Monofia</item>
+        <item>Souhag</item>
+    </string-array>
+    <string-array name="search_type">
+        <item>NONE</item>
+        <item>Electronics</item>
+        <item>home elements</item>
+        <item>bages and wallets</item>
+        <item>others</item>
+    </string-array>
 </resources>

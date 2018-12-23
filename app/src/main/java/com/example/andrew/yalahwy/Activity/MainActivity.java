@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import com.crashlytics.android.Crashlytics;
 import com.example.andrew.yalahwy.Entity.Person;
 import com.example.andrew.yalahwy.Services.Person_Service;
@@ -26,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mainToolbar;
     private Person_Service person_service;
 
+    String name_location;
+    String name_time;
+    String name_type;
+    boolean fromSearch;
+    private int requestCode;
 
     private void init(){
         mainToolbar = findViewById(R.id.main_toolbar);
@@ -37,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         post_service = new Post_Service();
         person_service = new Person_Service();
+
+        fromSearch = false;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(post_service.getAdap());
@@ -62,13 +71,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        post_service.showPost(this);
+
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        if(fromSearch) {
+            post_service.showPost(this, name_location, name_time, name_type);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(post_service.getAdap());
+        }else{
+            post_service.showPost(this, name_location, name_time, name_type);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(post_service.getAdap());
+        }
+        fromSearch = false;
+
     }
 
     @Override
@@ -83,16 +104,35 @@ public class MainActivity extends AppCompatActivity {
     {
         switch (item.getItemId())
         {
+            case R.id.app_bar_search:
+                go_to_search();
+                return true;
             case R.id.profile_main_menu:
                 startActivity(new Intent(MainActivity.this, ProfileAct.class));
                 return true;
             default:
-                finish();
-                System.exit(0);
                 return false;
 
         }
     }
+
+    public void go_to_search() {
+        Intent inten=new Intent(MainActivity.this,search.class);
+        startActivityForResult(inten, requestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == requestCode) {
+            if (resultCode == RESULT_OK) {
+                name_location = data.getStringExtra("location");
+                name_time = data.getStringExtra("time");
+                name_type = data.getStringExtra("type");
+                fromSearch = data.getBooleanExtra("fromSearch", false);
+            }
+        }
+    }
+
 
     public void sendToLogin() {
         Intent mainIntent = new Intent(MainActivity.this, LoginAct.class);

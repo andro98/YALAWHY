@@ -27,7 +27,9 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class Post_Service {
     AuthDataAccess mAuth;
     PostRecycle postRecycle;
     List<Post> post_list_data;
+    Timestamp mytime;
 
     private Bitmap compressedImageFile;
 
@@ -49,14 +52,21 @@ public class Post_Service {
 
         post_list_data = new ArrayList<>();
 
-        postRecycle = new PostRecycle(post_list_data);
+
     }
 
     public PostRecycle getAdap(){return postRecycle;}
 
-    public void showPost(Context context){
+    public void showPost(Context context, String loc, String time, String type){
         if(mAuth.getCurrentUserid()){
-            postDataAccess.getPost(context, post_list_data, postRecycle);
+            post_list_data.clear();
+            postRecycle = new PostRecycle(post_list_data);
+            if(loc == null && time == null && type == null){
+                postDataAccess.getPost(context, post_list_data, postRecycle);
+            }else{
+                mytime = translate_date(time);
+                postDataAccess.getPost(context, post_list_data, postRecycle, loc, type, mytime);
+            }
         }
 
     }
@@ -111,6 +121,45 @@ public class Post_Service {
     }
 
     public void updatePost(){
+
+    }
+
+    public Timestamp translate_date(String date) {
+        switch (date) {
+            case "today": {
+
+                Calendar cal = Calendar.getInstance();
+                //cal.add(cal.DATE,-1);
+                Timestamp ts = new Timestamp(cal.getTime().getTime());
+                return ts;
+            }
+            case "yasterday": {
+                Calendar cal = Calendar.getInstance();
+                cal.add(cal.DATE, -1);
+                Timestamp ts = new Timestamp(cal.getTime().getTime());
+                return ts;
+            }
+            case "this week": {
+                Calendar cal = Calendar.getInstance();
+                cal.add(cal.DATE, -7);
+                Timestamp ts = new Timestamp(cal.getTime().getTime());
+                return ts;
+            }
+            case "last week": {
+                Calendar cal = Calendar.getInstance();
+                cal.add(cal.DATE, -14);
+                Timestamp ts = new Timestamp(cal.getTime().getTime());
+                return ts;
+            }
+            case "this month": {
+                Calendar cal = Calendar.getInstance();
+                cal.add(cal.DATE, -30);
+                Timestamp ts = new Timestamp(cal.getTime().getTime());
+                return ts;
+            }
+            default:
+                return null;
+        }
 
     }
 }
